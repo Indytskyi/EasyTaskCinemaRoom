@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import com.indytskyi.entity.Cinema;
 import com.indytskyi.service.CinemaService;
-import com.indytskyi.validation.ValidateInputInteger;
+import com.indytskyi.validation.InputValidator;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -15,20 +15,17 @@ import org.junit.Test;
 
 public class CinemaServiceImplTest {
 
-
     Cinema cinema;
     CinemaService cinemaService;
-    ValidateInputInteger validateInputInteger;
 
     private final PrintStream standardOut = System.out;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         cinema = new Cinema();
-        validateInputInteger = new ValidateInputInteger();
-        cinemaService = new CinemaServiceImpl(cinema, System.in, validateInputInteger);
+        cinemaService = new CinemaServiceImpl(cinema, System.in);
         System.setOut(new PrintStream(outputStreamCaptor));
     }
 
@@ -80,7 +77,7 @@ public class CinemaServiceImplTest {
         cinema.setTotalIncome(900);
 
         //WHEN
-        cinemaService.statistic();
+        cinemaService.getStatistic();
 
         //THEN
         assertEquals(expected, outputStreamCaptor.toString());
@@ -103,7 +100,7 @@ public class CinemaServiceImplTest {
         cinema.setCurrentIncome(46);
 
         //WHEN
-        cinemaService.statistic();
+        cinemaService.getStatistic();
 
         //THEN
         assertEquals(expected, outputStreamCaptor.toString());
@@ -131,7 +128,7 @@ public class CinemaServiceImplTest {
                 Ticket price: $10
 
                 """;
-        cinemaService = new CinemaServiceImpl(cinema, System.in, validateInputInteger);
+        cinemaService = new CinemaServiceImpl(cinema, System.in);
 
         //WHEN
         cinemaService.bookTickets();
@@ -163,7 +160,7 @@ public class CinemaServiceImplTest {
                 Ticket price: $10
 
                 """;
-        cinemaService = new CinemaServiceImpl(cinema, System.in, validateInputInteger);
+        cinemaService = new CinemaServiceImpl(cinema, System.in);
 
         //WHEN
         cinemaService.bookTickets();
@@ -193,7 +190,7 @@ public class CinemaServiceImplTest {
                 Ticket price: $10
 
                 """;
-        cinemaService = new CinemaServiceImpl(cinema, System.in, validateInputInteger);
+        cinemaService = new CinemaServiceImpl(cinema, System.in);
         String[][] given = new String[6][6];
         cinema.setCinemaRoom(given);
         given[3][3] = "B";
@@ -224,7 +221,7 @@ public class CinemaServiceImplTest {
                 Ticket price: $8
 
                 """;
-        cinemaService = new CinemaServiceImpl(cinema, System.in, validateInputInteger);
+        cinemaService = new CinemaServiceImpl(cinema, System.in);
 
         //WHEN
         cinemaService.bookTickets();
@@ -251,7 +248,7 @@ public class CinemaServiceImplTest {
                 Ticket price: $10
 
                 """;
-        cinemaService = new CinemaServiceImpl(cinema, System.in, validateInputInteger);
+        cinemaService = new CinemaServiceImpl(cinema, System.in);
 
         //WHEN
         cinemaService.bookTickets();

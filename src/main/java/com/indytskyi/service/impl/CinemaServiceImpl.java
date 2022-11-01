@@ -1,8 +1,12 @@
 package com.indytskyi.service.impl;
 
+import static com.indytskyi.entity.Cinema.PRICE_CHANGE;
+import static com.indytskyi.entity.Cinema.PRICE_OF_ORDINARY_SEATS;
+import static com.indytskyi.entity.Cinema.PRICE_OF_PREMIUM_SEATS;
+import static com.indytskyi.validation.InputValidator.validate;
+
 import com.indytskyi.entity.Cinema;
 import com.indytskyi.service.CinemaService;
-import com.indytskyi.validation.ValidateInputInteger;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -10,17 +14,14 @@ public class CinemaServiceImpl implements CinemaService {
 
     private final Cinema cinema;
     private final Scanner scanner;
-    private final ValidateInputInteger validateInputInteger;
 
-    public CinemaServiceImpl(Cinema cinema, InputStream inputStream,
-                             ValidateInputInteger validateInputInteger) {
+    public CinemaServiceImpl(Cinema cinema, InputStream inputStream) {
         this.cinema = cinema;
         this.scanner = new Scanner(inputStream);
-        this.validateInputInteger = validateInputInteger;
     }
 
     @Override
-    public void statistic() {
+    public void getStatistic() {
         double percentageFullness = cinema.getNumberOgPurchasedTickets() == 0 ? 0 :
                 cinema.getNumberOgPurchasedTickets() * 100 / (double) (cinema.getRows() * cinema.getSeats());
         System.out.printf("""
@@ -51,10 +52,10 @@ public class CinemaServiceImpl implements CinemaService {
         }
         while (!validateTargetLocation(selectedRow, selectedSeat, cinemaRoom));
 
-        int price = (cinema.getRows() * cinema.getSeats() < cinema.getPriceChange()) ?
-                cinema.getPriceForThePremiumSeats() :
+        int price = (cinema.getRows() * cinema.getSeats() < PRICE_CHANGE) ?
+                PRICE_OF_PREMIUM_SEATS :
                 cinema.getSelectedRow() > cinema.getRows() / 2 ?
-                        cinema.getPriceForTheOrdinarySeats() : 10;
+                        PRICE_OF_ORDINARY_SEATS : 10;
 
         System.out.println("Ticket price: $" + price + "\n");
         cinemaRoom[cinema.getSelectedRow()][cinema.getSelectedSeat()] = "B";
@@ -65,8 +66,7 @@ public class CinemaServiceImpl implements CinemaService {
 
     private boolean validateTargetLocation(String selectedRow, String selectedSeat,
                                            String[][] cinemaRoom) {
-        if (!validateInputInteger.validate(selectedRow)
-                || !validateInputInteger.validate(selectedSeat)) {
+        if (!validate(selectedRow) || !validate(selectedSeat)) {
             System.out.println("You input incorrect values (Input only integers)!!!");
             return false;
         }
@@ -90,10 +90,10 @@ public class CinemaServiceImpl implements CinemaService {
     @Override
     public void calculateTotalIncome() {
         int totalIncome;
-        if (cinema.getRows() * cinema.getSeats() < cinema.getPriceChange()) {
-            totalIncome = cinema.getRows() * cinema.getSeats() * cinema.getPriceForThePremiumSeats();
+        if (cinema.getRows() * cinema.getSeats() < PRICE_CHANGE) {
+            totalIncome = cinema.getRows() * cinema.getSeats() * PRICE_OF_PREMIUM_SEATS;
         } else {
-            totalIncome = cinema.getRows() * cinema.getSeats() * cinema.getPriceForTheOrdinarySeats()
+            totalIncome = cinema.getRows() * cinema.getSeats() * PRICE_OF_ORDINARY_SEATS
                     + cinema.getSeats() * (cinema.getRows());
         }
         cinema.setTotalIncome(totalIncome);

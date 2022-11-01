@@ -2,7 +2,7 @@ package com.indytskyi.service;
 
 public interface CinemaService {
 
-    void statistic();
+    void getStatistic();
 
     void bookTickets();
 

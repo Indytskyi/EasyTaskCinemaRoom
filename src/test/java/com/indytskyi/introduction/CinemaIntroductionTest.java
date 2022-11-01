@@ -5,7 +5,7 @@ import static org.mockito.Mockito.doNothing;
 
 import com.indytskyi.entity.Cinema;
 import com.indytskyi.service.impl.CinemaServiceImpl;
-import com.indytskyi.validation.ValidateInputInteger;
+import com.indytskyi.validation.InputValidator;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -25,13 +25,12 @@ public class CinemaIntroductionTest {
 
     CinemaIntroduction cinemaIntroduction;
 
-    ValidateInputInteger validateInputInteger;
+    InputValidator validateInputInteger;
 
     @Before
     public void setUp() {
         cinema = new Cinema();
-        validateInputInteger = new ValidateInputInteger();
-        cinemaIntroduction = new CinemaIntroduction(cinema, cinemaService, validateInputInteger);
+        cinemaIntroduction = new CinemaIntroduction(cinema, cinemaService);
     }
 
     @Test
@@ -147,7 +146,7 @@ public class CinemaIntroductionTest {
         System.setOut(ps);
 
         //WHEN
-        doNothing().when(cinemaService).statistic();
+        doNothing().when(cinemaService).getStatistic();
         boolean response = cinemaIntroduction.menu();
         assertTrue(response);
     }

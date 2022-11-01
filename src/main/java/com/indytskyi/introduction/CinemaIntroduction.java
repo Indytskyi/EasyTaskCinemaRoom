@@ -2,10 +2,10 @@ package com.indytskyi.introduction;
 
 import static com.indytskyi.entity.Cinema.MAX_SIZE_OF_COUNT_ROWS;
 import static com.indytskyi.entity.Cinema.MAX_SIZE_OF_SEATS_IN_ROW;
+import static com.indytskyi.validation.InputValidator.validate;
 
 import com.indytskyi.entity.Cinema;
 import com.indytskyi.service.CinemaService;
-import com.indytskyi.validation.ValidateInputInteger;
 import java.util.Scanner;
 import lombok.RequiredArgsConstructor;
 
@@ -14,9 +14,6 @@ public class CinemaIntroduction {
 
     private final Cinema cinema;
     private final CinemaService cinemaService;
-
-    private final ValidateInputInteger validateInputInteger;
-
 
     public boolean menu() {
         Scanner scanner = new Scanner(System.in);
@@ -52,7 +49,7 @@ public class CinemaIntroduction {
             switch (controller) {
                 case 1 -> showTheSeats(cinema.getCinemaRoom());
                 case 2 -> cinemaService.bookTickets();
-                case 3 -> cinemaService.statistic();
+                case 3 -> cinemaService.getStatistic();
                 case 0 -> {
                     return true;
                 }
@@ -63,8 +60,7 @@ public class CinemaIntroduction {
 
     public boolean validationSizeOfCinemaRoom(String inputRows, String inputSeatsInRow) {
 
-        if (!validateInputInteger.validate(inputRows)
-                || !validateInputInteger.validate(inputSeatsInRow)) {
+        if (!validate(inputRows) || !validate(inputSeatsInRow)) {
             System.out.println("You input incorrect values (Input only integers)!!!");
             return false;
         }

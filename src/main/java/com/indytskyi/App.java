@@ -3,7 +3,7 @@ package com.indytskyi;
 import com.indytskyi.entity.Cinema;
 import com.indytskyi.introduction.CinemaIntroduction;
 import com.indytskyi.service.impl.CinemaServiceImpl;
-import com.indytskyi.validation.ValidateInputInteger;
+import com.indytskyi.validation.InputValidator;
 
 
 /**
@@ -15,9 +15,8 @@ public class App
     public static void main( String[] args )
     {
         Cinema cinema = new Cinema();
-        ValidateInputInteger validateInputInteger = new ValidateInputInteger();
-        CinemaServiceImpl cinemaService = new CinemaServiceImpl(cinema, System.in, validateInputInteger);
-        CinemaIntroduction cinemaIntroduction = new CinemaIntroduction(cinema, cinemaService, validateInputInteger);
+        CinemaServiceImpl cinemaService = new CinemaServiceImpl(cinema, System.in);
+        CinemaIntroduction cinemaIntroduction = new CinemaIntroduction(cinema, cinemaService);
         cinemaIntroduction.menu();
     }
 }
